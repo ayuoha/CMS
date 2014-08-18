@@ -1,0 +1,102 @@
+html {
+    font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+body {
+    font-size : 16px;
+}
+h1 {
+    font-size : 1.5em;
+}
+
+input { 
+    width: 90%;
+}
+textarea { 
+/*    width: 50em; */
+    width: 90%;
+    height: 20%; 
+}
+
+.blog {
+    width: 100%;
+}
+.entry {
+    width : 95%;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+}
+.page-title {
+    text-decoration : underline;
+}
+.title {
+    color : #555555;
+}
+.left {
+    float : left;
+    background-color : #f0f0f0;
+    width : 15%;
+    font-size : 0.75em;
+    padding-left : 1%;
+}
+.right {
+    float : right;
+    width : 80%;
+}
+.einput {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    clear : both;
+}
+.ilabel {
+    text-align : right;
+    float : left;
+    width : 8%;
+    padding-right : 0.5em;
+}
+.submit {
+    margin : 0.5em 0;
+    width : 6em;
+}
+.ierror {
+    color : red;
+    font-size : 0.875em;
+}
+.add-link {
+    float : right;
+    padding-bottom : 0.5em;
+}
+@media all and (max-width: 1039px) {
+.ilabel {
+    width : 15%;
+}
+.ifield {
+    float: left;
+    width: 80%;
+}
+}
+
+@media all and (max-width: 799px) {
+.left {
+    float : none;
+    width : 100%;
+    margin-bottom : 0.5em;
+}
+.right {
+    font-size : 0.9em;
+    float : none;
+    width : 100%;
+}
+
+@media all and (max-width: 529px) {
+.ilabel {
+    text-align: left;
+    float: none;
+    width : 15%;
+}
+.ifield {
+    float: none;
+    width: 100%;
+}
+}
