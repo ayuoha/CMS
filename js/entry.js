@@ -45,19 +45,17 @@ var addEntry = {
 			return "<h1>New entry was submitted successfully!</h1>" + addEntry.addBackToLinks();
 	},
 	getErrorContent : function (status, error) {
-        	return "<h1>Something went wrong! Please try again later.</h1><p>" 
-            	   + status + error + "</p>" + addEntry.addBackToLinks();
+			return "<h1>Something went wrong! Please try again later.</h1><p>" 
+					+ status + error + "</p>" + addEntry.addBackToLinks();
 	},
 	initializeForm : function () {
 			addEntry.config.inputForm.find('error').hide();
 			$('#author').focus();
 	},
 	addBackToLinks : function () {
-			var msg;
-			msg = '<p>'
-	       		+ 'Back to <a href="index.php">home</a> or Add <a href="entry.php">new entry</a> page.'
-	       		+ '</p>';
-			return msg;
+			return '<p>'
+	               + 'Back to <a href="index.php">home</a> or Add <a href="entry.php">new entry</a> page.'
+	       		   + '</p>';
 	},
 	validateInputFields : function (ifield) {
 			var result = true;
