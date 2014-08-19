@@ -7,8 +7,8 @@
 </head>
 
 <body>
-<div class="blog">
-  <div class="entry">
+<div id="blog" class="blog">
+  <div id="entry" class="entry">
     <div class="page-title"><h1>World of Cats</h1></div>
     <div class="add-link">
       Add <a href="entry.php">new entry</a>.
@@ -18,17 +18,20 @@
   $data = Article::getList();
   //print_r($data);
   $numEntries = count($data);
-  for ($i = 0; $i < $numEntries; $i++) {
-      echo '<div id="entry-' . $i . '" class="entry">';
-      echo '  <div class="title"><h1>' . $data[$i]['title'] . '</h1></div>';
-      echo '  <div class="content">';
-      echo '    <div class="left">';
-      echo '      <div class="date">' . $data[$i]['publicationDate'] . '</div>';
-      echo '      <div class="author">Written by ' . $data[$i]['author'] . '</div>';
-      echo '    </div>';
-      echo '    <div class="right">' . $data[$i]['content'] . '</div>';
-      echo '  </div>';
-      echo '</div>';
+
+  foreach ( $data as $article ) { 
+?>
+    <div id="entry-id-<?php echo $article->id ?>" class="entry">
+      <div class="title"><h1><?php echo $article->title ?></h1></div>
+      <div class="content">
+        <div class="left">
+          <div class="date"><?php echo $article->publicationDate ?></div>
+          <div class="author">Written by <?php echo $article->author ?></div>
+        </div>
+        <div class="right"><?php echo $article->content ?></div>
+      </div>
+    </div>
+<?php 
   }
 ?>
 </div>

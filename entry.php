@@ -6,8 +6,8 @@
         <link href="css/entry.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="blog">
-    <div class="entry">
+  <div id="blog" class="blog">
+    <div id="entry" class="entry">
     <div class="page-title"><h1>Add New Entry</h1></div>
       <div class="add-link">
         Back to <a href="index.php">home</a>.
@@ -41,7 +41,7 @@
     </div>
   </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/add-entry.js"></script>
+<script type="text/javascript" src="js/entry.js"></script>
 <!--[if lt IE 9]>
   <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 <![endif]-->

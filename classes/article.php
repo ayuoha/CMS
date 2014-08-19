@@ -47,8 +47,13 @@ class Article
   */
  
   public function __construct( $data=array() ) {
+    if ( isset( $data['id'] ) ) $this->id = (int) $data['id'];
+    if ( isset( $data['publicationDate'] ) ) $this->publicationDate = $data['publicationDate'];
+    if ( isset( $data['title'] ) ) $this->title = $data['title'];
+    if ( isset( $data['summary'] ) ) $this->summary = $data['summary'];
+    if ( isset( $data['content'] ) ) $this->content = $data['content'];
+    if ( isset( $data['author'] ) ) $this->author = $data['author'];
   }
- 
 
   /**
   * Sets the object's properties using the edit form post values in the supplied array
@@ -57,11 +62,11 @@ class Article
   */
  
   public function storeFormValues ( $params ) {
-      $publicationDate = date("Y-m-d");// Today's date 
-      $params['publicationDate'] = $publicationDate;
+      $this->__construct( $params );
+      $publicationDate = date("Y-m-d H:i:s");  // Current time 
+      $this->publicationDate = $publicationDate;
       return $params;
   }
- 
  
   /**
   * Returns an Article object matching the given article ID
@@ -85,98 +90,43 @@ class Article
   public static function getList( $numRows=1000000, $order="publicationDate DESC" ) {
     // $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
     $currentConnection = Article::getConnection();
-
-    // http://wiki.hashphp.org/PDO_Tutorial_for_MySQL_Developers
-    // -----------------------------------------
-    // foreach($db->query('SELECT * FROM table') as $row) {
-    // echo $row['field1'].' '.$row['field2']; //etc...
-    // ---------------------------------------
-    // $stmt = $db->query('SELECT * FROM table');
- 
-    // while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    // echo $row['field1'].' '.$row['field2']; //etc...
-    // }
-    // ------------------------------------------
-    // $stmt = $db->query('SELECT * FROM table');
-    // $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // -------------------------------------------
-    $query = 'SELECT title, content, publicationDate, author FROM articles ORDER BY ' . $order;
+    $query = 'SELECT id, title, content, publicationDate, author FROM articles ORDER BY ' . $order;
     $results = array();
     foreach($currentConnection->query($query) as $row) {
-       $article = array();
-       $article['title'] = $row['title'];
-       $article['content'] = $row['content'];
-       $article['publicationDate'] = $row['publicationDate'];
-       $article['author'] = $row['author'];
+       $article = new Article( $row );
        array_push($results, $article);
     }
-
-    // $stmt = $currentConnection->prepare('SELECT title, content, publicationDate FROM articles');
-    // $stmt->execute();
-    // $qryResults = $stmt->fetch();
-    //var_dump($results);
+    $currentConnection = null;
     return $results;
-    // var_dump($currentConnection);
   }
  
-
-  /**
-  * Adds new entry to DB
-  * @param Array Input values sent from add new entry form
-  * @return Array|true two element array : true, id => Id of the entry in DB
-  *               false  two-element array : result => false, error => error from SQLServer
-  */
-  public static function addEntry( $params ) {
-      $params = Article::storeFormValues( $params );
-      return Article::insert($params);
-  }
 
   /**
   * Inserts the current Article object into the database, and sets its ID property.
   */
  
-  public function insert($params) {
-      $currentConnection = Article::getConnection();
+  public function insert() {
+      $currentConnection = $this->getConnection();
 
-      $sql=$currentConnection->prepare("INSERT INTO articles(title,summary,content,author,publicationDate) VALUES(:title,:summary,:content,:author,:publicationDate)");
-      $sql->bindParam(':title',$params['title'],PDO::PARAM_STR);
-      $sql->bindParam(':summary',$params['summary'],PDO::PARAM_STR);
-      $sql->bindParam(':content',$params['content'],PDO::PARAM_STR);
-      $sql->bindParam(':author',$params['author'],PDO::PARAM_STR);
-      $sql->bindParam(':publicationDate',$params['publicationDate'],PDO::PARAM_STR,10);
+      $sql = $currentConnection->prepare("INSERT INTO articles(title,summary,content,author,publicationDate) VALUES(:title,:summary,:content,:author,:publicationDate)");
+      $sql->bindParam(':title',$this->title,PDO::PARAM_STR);
+      $sql->bindParam(':summary',$this->summary,PDO::PARAM_STR);
+      $sql->bindParam(':content',$this->content,PDO::PARAM_STR);
+      $sql->bindParam(':author',$this->author,PDO::PARAM_STR);
+      $sql->bindParam(':publicationDate',$this->publicationDate,PDO::PARAM_STR);
 
+      $result = array();
       if ($sql->execute()) {
-          $result = array();
           $result['result'] = true;
-          //$result['id'] = $sql->lastInsertId(); 
-          return $result;
       } else {
-          $result = array();
           $result['result'] = false;
           $result['error'] = $sql->errorInfo();
-          return $result;
       }
-  }
- 
- 
-  /**
-  * Updates the current Article object in the database.
-  */
- 
-  public function update() {
- 
-  }
- 
- 
-  /**
-  * Deletes the current Article object from the database.
-  */
- 
-  public function delete() {
- 
+      $currentConnection = null;
+      return $result;
   }
 
-  static function getConnection(){
+  public function getConnection(){
      $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
      return $conn;
   }
